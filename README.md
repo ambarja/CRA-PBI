@@ -1,10 +1,10 @@
 # **Introducción a datos e información de pronósticos para construir mapas de PBI**
 
-## Ejemplos:
+## 🔵 Ejemplos:
  - 🌧️ Niño Costero Perú 2017
  - 🌀 Tifón Molave Vietnam 2020
 
-## Intento de automatización usando el ecosistema espacial de R
+## 🔵 Intento de automatización usando el ecosistema espacial de R
 - Requerimientos:
    - `rgee`
    - `tidyverse`

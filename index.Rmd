@@ -1,0 +1,251 @@
+---
+title: "Introducción a datos e información de pronósticos para construir mapas de PBI"
+subtitle: "🌧️ Niño Costero Perú 2017 <br/>🌀 Tifón Molave Vietnam 2020"  
+author: 
+  - "Antony Barja"
+  - "Consultor Cruz Roja Alemana"
+date: '`r Sys.Date()`'
+output:
+  xaringan::moon_reader:
+    css: [xaringan-themer.css, custom.css]
+    nature:
+      slideNumberFormat: "%current%/%total%"
+      highlightStyle: idea
+      highlightLines: true
+      ratio: 16:9
+      countIncrementalSlides: true
+  seal: false
+---
+
+```{r setup, include=FALSE}
+options(htmltools.dir.version = FALSE)
+knitr::opts_chunk$set(
+  fig.width=9, fig.height=3.5, fig.retina=3,
+  out.width = "100%",
+  cache = FALSE,
+  echo = TRUE,
+  message = FALSE, 
+  warning = FALSE,
+  hiline = TRUE
+)
+```
+
+```{r xaringan-themer, include=FALSE, warning=FALSE}
+library(xaringanthemer)
+style_duo_accent(
+  primary_color = "#4548ff",
+  secondary_color = "#070714",
+  inverse_header_color = "#FFFFFF"
+)
+```
+
+class: inverse center middle
+
+# Consideraciones técnicas
+
+---
+# Requerimientos
+
+Para poder replicar los 2 ejercicios propuestos es necesario contar con la instalación y configuracion de los siguientes softwares y datos: 
+
+Software | Datos
+---|---
+- QGIS         |  - [📥 Pronostico y datos I](https://github.com/ambarja/CRA-PBI/raw/main/resources/Ni%C3%B1oCostero/datos_ni%C3%B1o2017.gpkg)
+- R & Rstudio  |  - [📥 Pronostico y datos II](https://github.com/ambarja/CRA-PBI/raw/main/resources/Tifon/datos_tifon2020.gpkg)
+
+*Paquetes dentro del software R:*
+ - `tidyverse`
+ - `rgee`
+ - `sf`
+ - `mapview`
+---
+# Flujo de trabajo 
+<br>
+<br>
+<br>
+<p align="center"><img src="./img/workflow.svg" width="100%"/></p>
+---
+# Trabajando con el software QGIS 
+
+<p align="center"><img src="https://user-images.githubusercontent.com/23284899/180781589-117b5fd0-035a-494f-b06c-6e6a0311df52.png" width="900px"/></p>
+
+---
+
+class: inverse center middle
+
+# Ejemplo para el <br>🌧️ Niño Costero 2017 Perú
+
+---
+# Descargando información de pronóstico
+
+.pull-left[
+ ![senamhi_01](https://user-images.githubusercontent.com/23284899/180781595-6e52fab9-aa1b-4a38-8185-60fd685d65ce.png)
+]
+
+.pull-right[
+ ![senamhi_02](https://user-images.githubusercontent.com/23284899/180781598-2e6c0c06-390e-4344-a87b-fca51aaa40fc.png)
+]
+
+---
+# Niño 2017
+.pull-left[
+<img src="https://user-images.githubusercontent.com/23284899/180781612-7d57e63a-6589-4a12-944b-8352264dac29.png" width="300px">
+]
+
+.pull-right[
+<img src="https://user-images.githubusercontent.com/23284899/180781613-f932d302-1f2f-471a-9ef9-6ea6017b6f0e.png" width="600px">
+]
+
+.footnote[[📥 Clic para descargar ejemplo](https://www.senamhi.gob.pe/?p=aviso-meteorologico-detalle&a=2017&b=034&c=022&d=SENA)]
+
+---
+# Lectura e intersección de capas vectoriales
+<p align="center"><img src="https://user-images.githubusercontent.com/23284899/180781615-98c1090f-90f2-4173-8721-55903a5387d4.png" width="900px"/></p>
+---
+# Estadística zonal 
+
+<p align="center"><img src="https://user-images.githubusercontent.com/23284899/180781616-2d52d9c2-9161-442d-b56e-691c7179819d.png" width="800px"/></p>
+.footnote[[📥 Clic para descargar ejemplo](https://data.humdata.org/dataset/peru-high-resolution-population-density-maps-demographic-estimates)]
+---
+# Tabla de resumen
+
+```{r echo=FALSE, message=FALSE,warning=FALSE}
+library(tidyverse)
+library(kableExtra)
+read.csv("resources/csv/niño_tabla.csv") %>% 
+  as_tibble() %>% 
+  arrange(desc(IR2)) %>% 
+  head(6) %>% 
+  knitr::kable(format = "html",caption = "Posibles distritos de mayor afectación")
+```
+---
+class: inverse center middle
+
+# Ejemplo para el <br>🌀 Tifón Molave Vietnam 2020
+
+---
+# Descargando información de pronóstico
+
+.pull-left[
+ ![senamhi_01](https://user-images.githubusercontent.com/23284899/180781600-5f6ec1d8-5f89-4eb9-b718-5907b90ec69f.png)
+]
+
+.pull-right[
+ ![senamhi_02](https://user-images.githubusercontent.com/23284899/180781605-1b402afc-6d87-4504-8438-b9b69f566399.png)
+]
+---
+# Lectura y georreferenciación
+
+<p align="center"><img src="https://user-images.githubusercontent.com/23284899/180781609-25452791-35f1-413e-913c-04ed918eb186.png" width="900px"/></p>
+
+---
+# Digitalización y estadística zonal 
+<p align="center"><img src="https://user-images.githubusercontent.com/23284899/180781610-4a4979a2-dc2d-4a02-aa9f-d57e3805bd36.png" width="800px"/></p>
+.footnote[[📥 Clic para descargar datos de población](https://data.humdata.org/dataset/vietnam-high-resolution-population-density-maps-demographic-estimates)]
+---
+# Tabla de resumen 
+
+```{r echo=FALSE, message=FALSE,warning=FALSE}
+library(tidyverse)
+library(kableExtra)
+read.csv("resources/csv/tifon_example.csv") %>% 
+  as_tibble() %>% 
+  dplyr::select(ADM1_EN,Pronostico,`niños.05`,`adultos.60`) %>% 
+  head(5) %>% 
+  knitr::kable(format = "html",caption = "Tabla de niños y adultos por admin")
+
+read.csv("resources/csv/nieveles_pop.csv") %>% 
+  knitr::kable(format = "html",caption = "Tabla de poblacion por niveles")
+```
+
+---
+class: inverse center middle
+
+# Intento de automatizar la generación de reportes 
+
+---
+# Lectura de pronóstico e información de riesgo
+
+```{r, eval=FALSE,out.width="100%"}
+library(tidyverse)
+library(sf)
+library(mapview)
+library(rgee)
+ee_Initialize(user = "antony.barja@upch.pe)
+```
+
+```{r, echo=FALSE,message=FALSE}
+library(sf)
+library(mapview)
+```
+
+```{r, echo=FALSE,out.width="100%"}
+
+pronostico <- st_read("resources/Tifon/datos_tifon2020.gpkg",layer = "pronostico",quiet = T)
+limites <- st_read("resources/Tifon/datos_tifon2020.gpkg",layer = "admin1",quiet = T)
+mapview(pronostico)
+```
+
+
+
+
+---
+
+# Estadística zonal 
+```{r, eval=FALSE}
+zona_impactada <- function(x){ 
+  # Nivel de pronostico 
+  nivel <- pronostico[x,]
+  # Intersección de capas
+  nuevos_limites <- st_intersection(x = limites,y = nivel) %>% 
+    dplyr::select(ADM1_EN,value) %>% 
+    sf_as_ee()
+  # Datos de población de Earth Engine
+  poblacion_estimada <- ee$ImageCollection$Dataset$WorldPop_GP_100m_pop$
+    select('population')$
+    filter(ee$Filter$calendarRange(2020,2020, "year"))$
+    mosaic()$
+    rename('pop')
+ # Estadistica zonal 
+  stat_general <- ee_extract(
+    x = poblacion_estimada,
+    y = nuevos_limites,
+    fun = ee$Reducer$sum(),
+    scale = 100)
+  stat_final <- stat_general %>% 
+    mutate(pop = round(pop,0))
+  return(stat_final)
+}
+```
+
+---
+# Generación de reporte
+```{r, eval=FALSE}
+# Resultados finales en listas
+lista_stat <- lapply(X = 1:3,FUN = zona_impactada) 
+
+# Tabla final por valores
+datos_finales <- lista_stat %>% 
+  map_df(.f = as_tibble) %>% 
+  group_by(value) %>% 
+  summarise(pop = sum(pop,na.rm = TRUE))
+```
+
+```{r,echo=FALSE}
+read_csv("resources/csv/nieveles_pop.csv") %>% 
+  kable(format = "html",caption = "Tabla de poblacion posiblemente afectada por niveles de pronóstico")
+```
+
+
+
+---
+class: center, middle
+
+# Gracias!
+
+Slides creados con los siguientes paquetes de  R:
+
+[**xaringan**](https://github.com/yihui/xaringan)<br>
+[gadenbuie/xaringanthemer](https://github.com/gadenbuie/xaringanthemer)
+
+The chakra comes from [remark.js](https://remarkjs.com), [**knitr**](http://yihui.name/knitr), and [R Markdown](https://rmarkdown.rstudio.com).
